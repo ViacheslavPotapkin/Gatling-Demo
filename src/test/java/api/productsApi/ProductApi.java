@@ -9,6 +9,12 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class ProductApi {
 
+    public static ChainBuilder getProducts = exec(
+            http("Get products")
+                    .get("/api/product")
+                    .check(status().is(200))
+    );
+
     public static ChainBuilder getProductById = exec(
             http("Get product by id")
                     .get("/api/product/34")

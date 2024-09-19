@@ -31,6 +31,7 @@ public class ApiDemoStoreSimulation extends Simulation {
     private ScenarioBuilder scn = scenario("ApiDemoStoreSimulation")
             .exec(CategoryApi.getCategories,
                     CategoryApi.getCategoryById,
+                    ProductApi.getProducts,
                     ProductApi.getProductById,
                     AuthApi.authenticate,
                     ProductApi.updateProduct,
@@ -39,6 +40,7 @@ public class ApiDemoStoreSimulation extends Simulation {
             );
 
     {
-        setUp(scn.injectOpen(atOnceUsers(1))).protocols(httpProtocol);
+        setUp(scn.injectOpen(atOnceUsers(1)))
+                .protocols(httpProtocol);
     }
 }
