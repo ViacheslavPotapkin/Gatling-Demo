@@ -9,15 +9,18 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 public class AuthApi {
 
     public static ChainBuilder authenticate =
-            exec(http("Authenticate")
-                    .post("/api/authenticate")
-                    .body(StringBody("""
-                            {
-                                "username": "admin",
-                                "password": "admin"
-                            }
-                            """))
-                    .check(status().is(200))
-                    .check(jsonPath("$.token").saveAs("jwt"))
+            doIf(session -> !session.getBoolean("isAuth")).then(
+                    exec(http("Authenticate")
+                            .post("/api/authenticate")
+                            .body(StringBody("""
+                                    {
+                                        "username": "admin",
+                                        "password": "admin"
+                                    }
+                                    """))
+                            .check(status().is(200))
+                            .check(jsonPath("$.token").saveAs("jwt")))
+                            .exec(session -> session.set("isAuth", true)
+                            )
             );
 }
