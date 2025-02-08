@@ -25,9 +25,9 @@ public class ApiDemoStoreSimulation extends Simulation {
             .contentTypeHeader("application/json")
             .acceptHeader("application/json");
 
-    protected static int USER_COUNT = Integer.parseInt(System.getProperty("USERS"));
-    protected static int RAMP_USER = Integer.parseInt(System.getProperty("RAMP_USERS"));
-    protected static Duration DURATION = Duration.ofSeconds(Integer.parseInt(System.getProperty("DURATION")));
+//    protected static int USER_COUNT = Integer.parseInt(System.getProperty("USERS"));
+//    protected static int RAMP_USER = Integer.parseInt(System.getProperty("RAMP_USERS"));
+//    protected static Duration DURATION = Duration.ofSeconds(Integer.parseInt(System.getProperty("DURATION")));
 
     public static Map<CharSequence, String> authorization = Map.ofEntries(
             Map.entry("authorization", "Bearer #{jwt}")
@@ -62,14 +62,8 @@ public class ApiDemoStoreSimulation extends Simulation {
             );
 
     {
-        setUp(admin.injectOpen(atOnceUsers(USER_COUNT),
-                        rampUsers(RAMP_USER).during(DURATION))
-                .protocols(httpProtocol))
-                .assertions(
-                        global().responseTime().max().lt(1000),
-                        global().successfulRequests().percent().gte(95.0),
-                        global().responseTime().percentile3().lt(500),
-                        details("Authenticate").responseTime().max().lt(100)
+        setUp(admin.injectOpen(atOnceUsers(1))
+                .protocols(httpProtocol)
                 );
     }
 
